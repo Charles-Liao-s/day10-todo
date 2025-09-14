@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useState } from "react";
 
 export const initState = [
     { id: 1, text: "the first todo", done: false },
@@ -58,6 +58,9 @@ export function todoReducer(state, action) {
         case "DELETE_TODO":
             return state.filter((item) => item.id !== action.payload.id);
 
+        case "ADD_TODO":
+            return [...state, action.payload];
+
         default:
             return state;
     }
@@ -65,12 +68,27 @@ export function todoReducer(state, action) {
 
 function App() {
     const [state, dispatch] = useReducer(todoReducer, initState);
+    const [inputValue, setInputValue] = useState('');
+
+    function handleAddTodo() {
+        if (inputValue.trim() === '') return;
+        dispatch({
+            type: "ADD_TODO",
+            payload: { id: Date.now(), text: inputValue, done: false }
+        });
+        setInputValue('');
+    }
 
     return (
         <div>
             <h2>Todo List</h2>
-            <input type="text" placeholder="Add the things you need to do today..." />
-            <button onClick={() => {}}>add</button>
+            <input 
+                type="text" 
+                placeholder="Add the things you need to do today..." 
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+            />
+            <button onClick={handleAddTodo}>add</button>
 
             <TodoContext.Provider value={{ state, dispatch }}>
                 <TodoGroup />
