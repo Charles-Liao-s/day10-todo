@@ -6,6 +6,8 @@
   text-align: center;
 }
 
-.todo-item .todo-done {
-  text-decoration: line-through;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
 }
