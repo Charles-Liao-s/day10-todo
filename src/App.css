@@ -1,13 +1,43 @@
 .todo-item {
-  width: 320px;
-  padding: 8px;
-  border: 1px solid black;
-  margin-top: 10px;
-  text-align: center;
+    width: 320px;
+    padding: 8px;
+    border: 1px solid black;
+    margin-top: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.todo-done {
+    text-decoration: line-through;
+    color: #888;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
+}
+
+/* 输入框样式 */
+input[type="text"] {
+    width: 300px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #4285f5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3367d6;
 }

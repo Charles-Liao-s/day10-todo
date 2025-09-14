@@ -1,53 +1,63 @@
-import {createContext, useContext, useReducer} from "react";
+import { createContext, useContext, useReducer } from "react";
 
 export const initState = [
-    {id: 1, text: "the first todo", done: false},
-    {id: 2, text: "the second todo", done: false},
+    { id: 1, text: "the first todo", done: false },
+    { id: 2, text: "the second todo", done: false },
 ];
-export const TodoContext = createContext()
-
-
+export const TodoContext = createContext();
 
 function TodoItem(props) {
-    const {state, dispatch} = useContext(TodoContext)
+    const { state, dispatch } = useContext(TodoContext);
+    const { todo } = props;
+
     function makeAsDone() {
-        dispatch({type: "TOGGLE_TODO", payload: {id: props.todo.id}})
+        dispatch({ type: "TOGGLE_TODO", payload: { id: todo.id } });
     }
-    return <div className={"todo-item"}>
-        <span className={props.todo.done ? "todo-done": ""} onClick={makeAsDone}>{
 
-        }</span>
-        {props.todo.text}
-    </div>
+    return (
+        <div className="todo-item">
+            <span
+                className={todo.done ? "todo-done" : ""}
+                onClick={makeAsDone}
+            >
+                {todo.text}
+            </span>
+            <button
+                onClick={() => dispatch({ type: "DELETE_TODO", payload: { id: todo.id } })}
+                style={{ marginLeft: "8px" }}
+            >
+                X
+            </button>
+        </div>
+    );
 }
-function TodoGroup() {
 
-    const {state, dispatch} = useContext(TodoContext)
-    return <div>
-        {
-            state.map((item) => {
-                return <TodoItem key={item.id} todo={item}/>
-            })
-        }
-    </div>
+function TodoGroup() {
+    const { state, dispatch } = useContext(TodoContext);
+    return (
+        <div>
+            {state.map((item) => (
+                <TodoItem key={item.id} todo={item} />
+            ))}
+        </div>
+    );
 }
 
 export function todoReducer(state, action) {
     switch (action.type) {
         case "TOGGLE_TODO":
-            /// copy
             const newState = [...state];
             const id = action.payload.id;
             return newState.map((value) => {
                 if (value.id === id) {
-                    return { id,
-                        text: value.text,
-                        done: !value.done
-                    };
+                    return { ...value, done: !value.done };
                 }
+                return value;
+            });
 
-                return value
-            })
+        case "DELETE_TODO":
+            return state.filter((item) => item.id !== action.payload.id);
+
         default:
             return state;
     }
@@ -55,10 +65,15 @@ export function todoReducer(state, action) {
 
 function App() {
     const [state, dispatch] = useReducer(todoReducer, initState);
+
     return (
         <div>
-            <TodoContext.Provider value={{state, dispatch}}>
-                <TodoGroup/>
+            <h2>Todo List</h2>
+            <input type="text" placeholder="Add the things you need to do today..." />
+            <button onClick={() => {}}>add</button>
+
+            <TodoContext.Provider value={{ state, dispatch }}>
+                <TodoGroup />
             </TodoContext.Provider>
         </div>
     );
