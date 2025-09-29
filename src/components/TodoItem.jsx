@@ -8,6 +8,7 @@ function TodoItem(props) {
     function makeAsDone() {
         dispatch({ type: "TOGGLE_TODO", payload: { id: todo.id } });
     }
+    // 1111
 
     return (
         <div className="todo-item">
